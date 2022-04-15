@@ -139,7 +139,8 @@ print_section <- function(cv, section_id, glue_template = "default"){
 
   if(glue_template == "default"){
     glue_template <- "
-{title}, {loc}, {description_bullets} \\hfill {timeline}"
+{title}, {loc}, {description_bullets} \\hfill {timeline}
+  \n\n\n"
   }
 
   section_data <- dplyr::filter(cv$entries_data, section == section_id)
