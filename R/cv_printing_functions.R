@@ -137,9 +137,9 @@ sanitize_links <- function(cv, text){
 #' @export
 print_section <- function(cv, section_id, glue_template = "default"){
 
-  if(glue_template == "default"){
+  if(glue_template == "defaults"){
     glue_template <- "
-{title}, {loc}, {institution} \\hfill {timeline}"
+{title}, {loc}, {description_bullet} \\hfill {timeline}"
   }
 
   section_data <- dplyr::filter(cv$entries_data, section == section_id)
