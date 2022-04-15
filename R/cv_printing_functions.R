@@ -14,6 +14,7 @@
 #' @param sheet_is_publicly_readable If you're using google sheets for data,
 #'   is the sheet publicly available? (Makes authorization easier.)
 #' @return A new `CV_Printer` object.
+#' @export
 create_CV_object <-  function(data_location,
                               pdf_mode = TRUE,
                               sheet_is_publicly_readable = TRUE) {
