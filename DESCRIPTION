@@ -1,0 +1,12 @@
+Package: datadrivencv
+Title: Data Driven CV 
+Version: 0.0.0.1
+Authors@R: 
+    person("Eirik", "Berger", , "eirik.berger@gmail.com", role = "cre",
+           comment = c(ORCID = "0000-0002-1861-9384"))
+Description: Produces a nice looking academic CV from information in a google drive sheet. 
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
