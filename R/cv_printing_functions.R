@@ -137,7 +137,7 @@ sanitize_links <- function(cv, text){
 #' @export
 print_section <- function(cv, section_id, glue_template = "default"){
 
-  if(glue_template == "defaults"){
+  if(glue_template == "default"){
     glue_template <- "
 {title}, {loc}, {description_bullet} \\hfill {timeline}"
   }
