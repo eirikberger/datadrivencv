@@ -6,7 +6,7 @@
 \usage{
 create_CV_object(
   data_location,
-  pdf_mode = FALSE,
+  pdf_mode = TRUE,
   sheet_is_publicly_readable = TRUE
 )
 }
