@@ -2,4 +2,9 @@
 
 export(create_CV_object)
 export(cv)
+export(print_contact_info)
+export(print_links)
+export(print_section)
+export(print_skill_bars)
+export(print_text_block)
 export(templ_cv)

@@ -134,6 +134,7 @@ sanitize_links <- function(cv, text){
 
 #' @description Take a position data frame and the section id desired and prints the section to markdown.
 #' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
+#' @export
 print_section <- function(cv, section_id, glue_template = "default"){
 
   if(glue_template == "default"){
@@ -163,6 +164,7 @@ print_section <- function(cv, section_id, glue_template = "default"){
 
 #' @description Prints out text block identified by a given label.
 #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
+#' @export
 print_text_block <- function(cv, label){
   text_block <- dplyr::filter(cv$text_blocks, loc == label) %>%
     dplyr::pull(text)
@@ -178,6 +180,7 @@ print_text_block <- function(cv, label){
 
 #' @description Construct a bar chart of skills
 #' @param out_of The relative maximum for skills. Used to set what a fully filled in skill bar is.
+#' @export
 print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_background = "#d9d9d9", glue_template = "default"){
 
   if(glue_template == "default"){
@@ -200,6 +203,7 @@ print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_backgrou
 
 
 #' @description List of all links in document labeled by their superscript integer.
+#' @export
 print_links <- function(cv) {
   n_links <- length(cv$links)
   if (n_links > 0) {
@@ -223,6 +227,7 @@ Links {data-icon=link}
 
 
 #' @description Contact information section with icons
+#' @export
 print_contact_info <- function(cv){
   glue::glue_data(
     cv$contact_info,
