@@ -6,14 +6,14 @@ title: "CV"
 author: Eirik Berger
 
 jobtitle: "PhD Research Scholar"
-address: "Guinness Brewery · Park Royal · London NW10 7RR, UK"
+address: "Helleveien 30, 5045 Bergen, Vestlandet, Norway"
 fontawesome: yes
 email: eirik.berger@gmail.com
 github: eirikberger
 twitter: eirikberger
 #osf: "Enter 5 digit osf string here"
 phone: "+47 954 61 029"
-web: https://eirikberger.github.io/
+web: eirikberger.github.io
 updated: TRUE
 rdateformat: "`r format(Sys.time(), '%d %b %Y')`"
 
@@ -25,6 +25,22 @@ fontsize: 11pt
 linkcolor: blue
 urlcolor: blue
 ---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(magrittr) # For the pipe
+#source("cv_printing_functions.r")
+
+# Read in all data and initialize a CV printer object
+CV <- create_CV_object(
+  data_location = "https://docs.google.com/spreadsheets/d/1bBlRkTPyPXkxHUzBo7H6xJm33vnP-qv0sJ5rI1eCRO4/edit?usp=sharing"
+)
+
+```
 
 # Employment
 
@@ -86,3 +102,7 @@ Student. 1904. "The Application of the 'Law of Error' to the Work of the Brewery
 # References
 
 Available upon request, though likely would include Karl Pearson and Ronald A. Fisher. Please send corrections, feedback, or details of missed publications (of which there are probably a few) to svmille@clemson.edu.
+
+```{r}
+CV %<>% print_section('academic_articles')
+```
