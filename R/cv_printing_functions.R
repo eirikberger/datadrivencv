@@ -139,7 +139,7 @@ print_section <- function(cv, section_id, glue_template = "default"){
 
   if(glue_template == "default"){
     glue_template <- "
-### {title}, {loc}, {institution} \\hfill {timeline}
+{title}, {loc}, {institution} \\hfill {timeline}
 \n\n\n"
   }
 
