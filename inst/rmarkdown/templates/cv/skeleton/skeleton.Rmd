@@ -42,38 +42,23 @@ CV <- datadrivencv::create_CV_object(
 
 ```
 
-# Employment
-
-*Arthur Guinness & Son*
-
-Chief Brewer (Park Royal) \hfill 1935-1937
-
-Researcher (Dublin) \hfill 1899-1935
-
-# Education
-
-*New College, Oxford University*, B.A. Chemistry \hfill 1899
-
 ```{r, education}
 CV %<>% datadrivencv::print_section('education')
 ```
 
-# Publications
-
-## Journal Articles
+# Journal Articles
 
 ```{r, academic_articles}
 CV %<>% datadrivencv::print_section('academic_articles')
-print('\vfill{0.3cm}')
 ```
 
-## Working Papers
+# Working Papers
 
 ```{r, working_papers}
 CV %<>% datadrivencv::print_section('working_papers')
 ```
 
-## Ongoing Work
+# Ongoing Work
 
 ```{r, ongoing_work}
 CV %<>% datadrivencv::print_section('ongoing_work')
