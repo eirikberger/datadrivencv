@@ -30,7 +30,7 @@
 #'
 
 cv <- function(...){
-  templ <- system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "stevetemplates")
+  templ <- system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "datadrivencv")
   rmarkdown::pdf_document(template = templ,
                           ...)
 }
@@ -39,5 +39,5 @@ cv <- function(...){
 #' @rdname cv
 #' @export
 templ_cv <- function() {
-  print(system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "stevetemplates"))
+  print(system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "datadrivencv"))
 }

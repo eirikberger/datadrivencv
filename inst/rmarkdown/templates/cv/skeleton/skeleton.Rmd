@@ -41,29 +41,54 @@ CV <- datadrivencv::create_CV_object(
 
 ```
 
-```{r, education}
-CV %<>% datadrivencv::print_section('education')
+# Education
+
+```{r}
+CV %<>% datadrivencv::print_section_education('education')
 ```
 
-# Journal Articles
+# Other Engagements
 
-```{r, academic_articles}
-CV %<>% datadrivencv::print_section('academic_articles')
+```{r}
+CV %<>% datadrivencv::print_section_education('other')
 ```
+
+<!--- # Journal Articles
+
+```{r}
+#CV %<>% datadrivencv::print_section_articles('academic_articles')
+```
+-->
 
 # Working Papers
 
-```{r, working_papers}
-CV %<>% datadrivencv::print_section('working_papers')
+```{r}
+CV %<>% datadrivencv::print_section_articles('working_papers')
 ```
 
 # Ongoing Work
 
-```{r, ongoing_work}
-CV %<>% datadrivencv::print_section('ongoing_work')
+```{r}
+CV %<>% datadrivencv::print_section_ongoing('ongoing_work')
 ```
+
+# Other Work
+
+```{r}
+CV %<>% datadrivencv::print_section_articles('not_for_publishing')
+```
+
+# Skills
+
+## Data science
+R (advanced), Stata (advanced), Python (proficient) and Bash (proficient)
+
+## Other
+Git, Excel, Linux, Google Cloud Services, Latex, Markdown
+
+## Languages
+Norwegian and English
 
 # References
 
-Available upon request, though likely would include Karl Pearson and Ronald A. Fisher. Please send corrections, feedback, or details of missed publications (of which there are probably a few) to svmille@clemson.edu.
-
+Insert references from Kjell Gunnar Salvanes, Ran Abramitzky and who else?

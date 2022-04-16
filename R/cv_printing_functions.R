@@ -75,11 +75,12 @@ create_CV_object <-  function(data_location,
     tidyr::unite(
       tidyr::starts_with('description'),
       col = "description_bullets",
-      sep = "\n- ",
+      #sep = "\n- ",
+      sep = "",
       na.rm = TRUE
     ) %>%
     dplyr::mutate(
-      description_bullets = ifelse(description_bullets != "", paste0("- ", description_bullets), ""),
+      description_bullets = ifelse(description_bullets != "", paste0("", description_bullets), ""),
       start = ifelse(start == "NULL", NA, start),
       end = ifelse(end == "NULL", NA, end),
       start_year = extract_year(start),
@@ -91,7 +92,7 @@ create_CV_object <-  function(data_location,
       timeline = dplyr::case_when(
         no_start  & no_end  ~ "N/A",
         no_start  & has_end ~ as.character(end),
-        has_start & no_end  ~ paste("Current", "-", start),
+        #has_start & no_end  ~ paste("Current", "-", start),
         TRUE                ~ paste(end, "-", start)
       )
     ) %>%
@@ -135,11 +136,104 @@ sanitize_links <- function(cv, text){
 #' @description Take a position data frame and the section id desired and prints the section to markdown.
 #' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
 #' @export
-print_section <- function(cv, section_id, glue_template = "default"){
+print_section_articles <- function(cv, section_id, glue_template = "default"){
 
   if(glue_template == "default"){
     glue_template <- "
-{title}, {loc}, *{description_bullets}* \\hfill {timeline}
+{title}, *{loc}*, {description_bullets} \\hfill {start}
+  \n\n\n"
+  }
+
+  section_data <- dplyr::filter(cv$entries_data, section == section_id)
+
+  # Take entire entries data frame and removes the links in descending order
+  # so links for the same position are right next to each other in number.
+  for(i in 1:nrow(section_data)){
+    for(col in c('title', 'description_bullets')){
+      strip_res <- sanitize_links(cv, section_data[i, col])
+      section_data[i, col] <- strip_res$text
+      cv <- strip_res$cv
+    }
+  }
+
+  print(glue::glue_data(section_data, glue_template))
+  cat('\\vspace{0.3cm}')
+
+  invisible(strip_res$cv)
+}
+
+
+
+#' @description Take a position data frame and the section id desired and prints the section to markdown.
+#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
+#' @export
+print_section_education <- function(cv, section_id, glue_template = "default"){
+
+  if(glue_template == "default"){
+    glue_template <- "
+{institution}, **{title}**, {description_bullets} \\hfill {start}
+  \n\n\n"
+  }
+
+  section_data <- dplyr::filter(cv$entries_data, section == section_id)
+
+  # Take entire entries data frame and removes the links in descending order
+  # so links for the same position are right next to each other in number.
+  for(i in 1:nrow(section_data)){
+    for(col in c('title', 'description_bullets')){
+      strip_res <- sanitize_links(cv, section_data[i, col])
+      section_data[i, col] <- strip_res$text
+      cv <- strip_res$cv
+    }
+  }
+
+  print(glue::glue_data(section_data, glue_template))
+  cat('\\vspace{0.3cm}')
+
+  invisible(strip_res$cv)
+}
+
+
+
+#' @description Take a position data frame and the section id desired and prints the section to markdown.
+#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
+#' @export
+print_section_ongoing <- function(cv, section_id, glue_template = "default"){
+
+  if(glue_template == "default"){
+    glue_template <- "
+{title} {description_bullets}
+  \n\n\n"
+  }
+
+  section_data <- dplyr::filter(cv$entries_data, section == section_id)
+
+  # Take entire entries data frame and removes the links in descending order
+  # so links for the same position are right next to each other in number.
+  for(i in 1:nrow(section_data)){
+    for(col in c('title', 'description_bullets')){
+      strip_res <- sanitize_links(cv, section_data[i, col])
+      section_data[i, col] <- strip_res$text
+      cv <- strip_res$cv
+    }
+  }
+
+  print(glue::glue_data(section_data, glue_template))
+  cat('\\vspace{0.3cm}')
+
+  invisible(strip_res$cv)
+}
+
+
+
+#' @description Take a position data frame and the section id desired and prints the section to markdown.
+#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
+#' @export
+print_section_working_paper <- function(cv, section_id, glue_template = "default"){
+
+  if(glue_template == "default"){
+    glue_template <- "
+{title}, {description_bullets} \\hfill {start}
   \n\n\n"
   }
 
@@ -175,65 +269,4 @@ print_text_block <- function(cv, label){
   cat(strip_res$text)
 
   invisible(strip_res$cv)
-}
-
-
-
-#' @description Construct a bar chart of skills
-#' @param out_of The relative maximum for skills. Used to set what a fully filled in skill bar is.
-#' @export
-print_skill_bars <- function(cv, out_of = 5, bar_color = "#969696", bar_background = "#d9d9d9", glue_template = "default"){
-
-  if(glue_template == "default"){
-    glue_template <- "
-<div
-  class = 'skill-bar'
-  style = \"background:linear-gradient(to right,
-                                      {bar_color} {width_percent}%,
-                                      {bar_background} {width_percent}% 100%)\"
->{skill}</div>"
-  }
-  cv$skills %>%
-    dplyr::mutate(width_percent = round(100*as.numeric(level)/out_of)) %>%
-    glue::glue_data(glue_template) %>%
-    print()
-
-  invisible(cv)
-}
-
-
-
-#' @description List of all links in document labeled by their superscript integer.
-#' @export
-print_links <- function(cv) {
-  n_links <- length(cv$links)
-  if (n_links > 0) {
-    cat("
-Links {data-icon=link}
---------------------------------------------------------------------------------
-
-<br>
-
-
-")
-
-    purrr::walk2(cv$links, 1:n_links, function(link, index) {
-      print(glue::glue('{index}. {link}'))
-    })
-  }
-
-  invisible(cv)
-}
-
-
-
-#' @description Contact information section with icons
-#' @export
-print_contact_info <- function(cv){
-  glue::glue_data(
-    cv$contact_info,
-    "- <i class='{type} {type}-{icon}'></i> {contact}"
-  ) %>% print()
-
-  invisible(cv)
 }
