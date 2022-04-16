@@ -156,6 +156,7 @@ print_section <- function(cv, section_id, glue_template = "default"){
   }
 
   print(glue::glue_data(section_data, glue_template))
+  cat('\\vspace{0.3cm}')
 
   invisible(strip_res$cv)
 }

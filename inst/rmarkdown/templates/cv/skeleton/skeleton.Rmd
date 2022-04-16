@@ -5,15 +5,15 @@ geometry: margin=1in
 title: "CV"
 author: Eirik Berger
 
-jobtitle: "PhD Research Scholar"
-address: "Helleveien 30, 5045 Bergen, Vestlandet, Norway"
+jobtitle: "PhD Research Scholar | Norwegian School of Economics"
+#address: "Helleveien 30, 5045 Bergen, Vestlandet, Norway"
 fontawesome: yes
 email: eirik.berger@gmail.com
-github: eirikberger
-twitter: eirikberger
+#github: eirikberger
+#twitter: eirikberger
 #osf: "Enter 5 digit osf string here"
 phone: "+47 954 61 029"
-web: eirikberger.github.io
+#web: eirikberger.github.io
 updated: TRUE
 rdateformat: "`r format(Sys.time(), '%d %b %Y')`"
 
@@ -36,7 +36,7 @@ library(magrittr) # For the pipe
 #source("cv_printing_functions.r")
 
 # Read in all data and initialize a CV printer object
-CV <- create_CV_object(
+CV <- datadrivencv::create_CV_object(
   data_location = "https://docs.google.com/spreadsheets/d/1bBlRkTPyPXkxHUzBo7H6xJm33vnP-qv0sJ5rI1eCRO4/edit?usp=sharing"
 )
 
@@ -54,24 +54,29 @@ Researcher (Dublin) \hfill 1899-1935
 
 *New College, Oxford University*, B.A. Chemistry \hfill 1899
 
+```{r, education}
+CV %<>% datadrivencv::print_section('education')
+```
+
 # Publications
 
 ## Journal Articles
 
-```{r}
-CV %<>% print_section('academic_articles')
+```{r, academic_articles}
+CV %<>% datadrivencv::print_section('academic_articles')
+print('\vfill{0.3cm}')
 ```
 
-# Working Papers
+## Working Papers
 
-```{r}
-CV %<>% print_section('working_papers')
+```{r, working_papers}
+CV %<>% datadrivencv::print_section('working_papers')
 ```
 
-# Ongoing Work
+## Ongoing Work
 
-```{r}
-CV %<>% print_section('ongoing_work')
+```{r, ongoing_work}
+CV %<>% datadrivencv::print_section('ongoing_work')
 ```
 
 # References
