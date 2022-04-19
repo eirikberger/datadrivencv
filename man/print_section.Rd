@@ -7,7 +7,8 @@
 print_section(
   cv,
   section_id,
-  regex_expression = "{title} {description_bullets} \\\\hfill {start}"
+  regex_expression = "{title} {description_bullets} \\\\hfill {start}",
+  title = "# Title"
 )
 }
 \arguments{

@@ -11,7 +11,6 @@ fontawesome: yes
 email: eirik.berger@gmail.com
 #github: eirikberger
 #twitter: eirikberger
-#osf: "Enter 5 digit osf string here"
 phone: "+47 954 61 029"
 #web: eirikberger.github.io
 updated: TRUE
@@ -41,60 +40,46 @@ CV <- datadrivencv::create_CV_object(
 
 ```
 
-# Education
-
-```{r}
-CV %<>% datadrivencv::print_section('education', regex_expression = '{title} at {institution} \\hfill {timeline}')
+```{r, education}
+CV %>% datadrivencv::print_section('education', regex_expression = '{title} at {institution} \\hfill {timeline}', title = '# Education')
 ```
 
-# Other Engagements
-
-```{r}
-CV %<>% datadrivencv::print_section('other', regex_expression = '{title} at {institution} \\hfill {timeline}')
+```{r, articles}
+CV %>% datadrivencv::print_section('articles', regex_expression = '{title}, *{loc}*, {description_bullets} \\hfill {start}', title = '# Journal Articles')
 ```
 
-<!--- # Journal Articles
-
-```{r}
-#CV %<>% datadrivencv::print_section('articles', regex_expression = '{title}, *{loc}*, {description_bullets} \\hfill {start}')
-```
--->
-
-# Working Papers
-
-```{r}
-CV %<>% datadrivencv::print_section('working_papers', regex_expression = '"{title}" {description_bullets} \\hfill {start}')
+```{r, working_papers}
+CV %>% datadrivencv::print_section('working_papers', regex_expression = '"{title}" {description_bullets} \\hfill {start}', title = '# Working Papers')
 ```
 
-# Selected Work in Progress
-
-```{r}
-CV %<>% datadrivencv::print_section('ongoing_work', regex_expression = '"{title}" {description_bullets}')
+```{r, ongoing_work}
+CV %>% datadrivencv::print_section('ongoing_work', regex_expression = '"{title}" {description_bullets}', title = '# Selected Work in Progress')
 ```
 
-# Articles Not Intended for Publication
-
-```{r}
-CV %<>% datadrivencv::print_section('not_for_publishing', regex_expression = '"{title}", *{loc}*, {description_bullets} \\hfill {start}')
+```{r, not_for_publishing}
+CV %>% datadrivencv::print_section('not_for_publishing', regex_expression = '"{title}", {loc}, {description_bullets} \\hfill {start}', title = '# Articles Not Intended for Publication')
 ```
 
-# Presentations
-
-```{r}
-CV %<>% datadrivencv::print_section('seminar', regex_expression = '{title} \\hfill {start}')
+```{r, other}
+CV %>% datadrivencv::print_section('other', regex_expression = '{title} at {institution} \\hfill {timeline}', title = '# Other Engagements')
 ```
 
-# Skills
+```{r, seminars}
+CV %>% datadrivencv::print_section('seminar', regex_expression = '{title} \\hfill {start}', title = '# Presentations')
+```
 
-## Data science
-R (advanced), Stata (advanced), Python (proficient) and Bash (proficient)
+```{r, teaching}
+CV %>% datadrivencv::print_section('teaching', regex_expression = '{title} \\hfill {start}', title = '# Teaching \n## Teaching Assistant')
+```
 
-## Other
-Git, Excel, Linux, Google Cloud Services, Latex, Markdown
+```{r, skills_data}
+CV %>% datadrivencv::print_section('data_science', regex_expression = '{title}', title = '# Skills \n## Data science')
+```
 
-## Languages
-Norwegian and English
+```{r, skills_language}
+CV %>% datadrivencv::print_section('language', regex_expression = '{title}', title = '\\vspace{-0.3cm}## Languages')
+```
 
-# References
-
-Insert references from Kjell Gunnar Salvanes, Ran Abramitzky and who else?
+```{r, references}
+CV %>% datadrivencv::print_section('references', regex_expression = '{title}', title = '# References')
+```
