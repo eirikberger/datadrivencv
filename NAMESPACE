@@ -2,9 +2,6 @@
 
 export(create_CV_object)
 export(cv)
-export(print_section_articles)
-export(print_section_education)
-export(print_section_ongoing)
-export(print_section_working_paper)
+export(print_section)
 export(print_text_block)
-export(templ_cv)
+export(print_var_names)

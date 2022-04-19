@@ -5,7 +5,7 @@
 #' Create a CV_Printer object.
 #'
 #' @param data_location Path of the spreadsheets holding all your data. This can be
-#'   either a URL to a google sheet with multiple sheets containing the four
+#'   either a URL to a Google Sheet with multiple sheets containing the four
 #'   data types or a path to a folder containing four `.csv`s with the neccesary
 #'   data.
 #' @param source_location Where is the code to build your CV hosted?
@@ -93,9 +93,11 @@ create_CV_object <-  function(data_location,
         no_start  & no_end  ~ "N/A",
         no_start  & has_end ~ as.character(end),
         #has_start & no_end  ~ paste("Current", "-", start),
-        TRUE                ~ paste(end, "-", start)
+        has_start & no_end  ~ paste(start),
+        TRUE                ~ paste(start, "-", end)
       )
     ) %>%
+    dplyr::arrange(desc(parse_dates(start))) %>%
     dplyr::arrange(desc(parse_dates(end))) %>%
     dplyr::mutate_all(~ ifelse(is.na(.), 'N/A', .))
 
@@ -133,130 +135,43 @@ sanitize_links <- function(cv, text){
 }
 
 
+#' Create a markdown code with given content and layout
+#'
 #' @description Take a position data frame and the section id desired and prints the section to markdown.
 #' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
+#' @param regex_expression Expression defining the output based on input from google drive og csv files. For example, use `{title}` to insert title. Use `print_var_names` to get a list of availible variable names.
+#' @return Markdown code with data from defined input.
 #' @export
-print_section_articles <- function(cv, section_id, glue_template = "default"){
+print_section <- function(cv, section_id, regex_expression='{title} {description_bullets} \\hfill {start}', title = '# Title'){
 
-  if(glue_template == "default"){
-    glue_template <- "
-{title}, *{loc}*, {description_bullets} \\hfill {start}
-  \n\n\n"
-  }
+  glue_template <- paste0(regex_expression, "\n\n\n")
 
   section_data <- dplyr::filter(cv$entries_data, section == section_id)
 
-  # Take entire entries data frame and removes the links in descending order
-  # so links for the same position are right next to each other in number.
-  for(i in 1:nrow(section_data)){
-    for(col in c('title', 'description_bullets')){
-      strip_res <- sanitize_links(cv, section_data[i, col])
-      section_data[i, col] <- strip_res$text
-      cv <- strip_res$cv
+  if (nrow(section_data)!=0){
+    cat(paste0(title, '\n'))
+
+    # Take entire entries data frame and removes the links in descending order
+    # so links for the same position are right next to each other in number.
+    for(i in 1:nrow(section_data)){
+      for(col in c('title', 'description_bullets')){
+        strip_res <- sanitize_links(cv, section_data[i, col])
+        section_data[i, col] <- strip_res$text
+        cv <- strip_res$cv
+      }
     }
+
+    print(glue::glue_data(section_data, glue_template))
+    cat('\\vspace{0.3cm}')
+
+    invisible(strip_res$cv)
   }
-
-  print(glue::glue_data(section_data, glue_template))
-  cat('\\vspace{0.3cm}')
-
-  invisible(strip_res$cv)
 }
 
 
 
-#' @description Take a position data frame and the section id desired and prints the section to markdown.
-#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
-#' @export
-print_section_education <- function(cv, section_id, glue_template = "default"){
-
-  if(glue_template == "default"){
-    glue_template <- "
-{institution}, **{title}**, {description_bullets} \\hfill {start}
-  \n\n\n"
-  }
-
-  section_data <- dplyr::filter(cv$entries_data, section == section_id)
-
-  # Take entire entries data frame and removes the links in descending order
-  # so links for the same position are right next to each other in number.
-  for(i in 1:nrow(section_data)){
-    for(col in c('title', 'description_bullets')){
-      strip_res <- sanitize_links(cv, section_data[i, col])
-      section_data[i, col] <- strip_res$text
-      cv <- strip_res$cv
-    }
-  }
-
-  print(glue::glue_data(section_data, glue_template))
-  cat('\\vspace{0.3cm}')
-
-  invisible(strip_res$cv)
-}
-
-
-
-#' @description Take a position data frame and the section id desired and prints the section to markdown.
-#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
-#' @export
-print_section_ongoing <- function(cv, section_id, glue_template = "default"){
-
-  if(glue_template == "default"){
-    glue_template <- "
-{title} {description_bullets}
-  \n\n\n"
-  }
-
-  section_data <- dplyr::filter(cv$entries_data, section == section_id)
-
-  # Take entire entries data frame and removes the links in descending order
-  # so links for the same position are right next to each other in number.
-  for(i in 1:nrow(section_data)){
-    for(col in c('title', 'description_bullets')){
-      strip_res <- sanitize_links(cv, section_data[i, col])
-      section_data[i, col] <- strip_res$text
-      cv <- strip_res$cv
-    }
-  }
-
-  print(glue::glue_data(section_data, glue_template))
-  cat('\\vspace{0.3cm}')
-
-  invisible(strip_res$cv)
-}
-
-
-
-#' @description Take a position data frame and the section id desired and prints the section to markdown.
-#' @param section_id ID of the entries section to be printed as encoded by the `section` column of the `entries` table
-#' @export
-print_section_working_paper <- function(cv, section_id, glue_template = "default"){
-
-  if(glue_template == "default"){
-    glue_template <- "
-{title}, {description_bullets} \\hfill {start}
-  \n\n\n"
-  }
-
-  section_data <- dplyr::filter(cv$entries_data, section == section_id)
-
-  # Take entire entries data frame and removes the links in descending order
-  # so links for the same position are right next to each other in number.
-  for(i in 1:nrow(section_data)){
-    for(col in c('title', 'description_bullets')){
-      strip_res <- sanitize_links(cv, section_data[i, col])
-      section_data[i, col] <- strip_res$text
-      cv <- strip_res$cv
-    }
-  }
-
-  print(glue::glue_data(section_data, glue_template))
-  cat('\\vspace{0.3cm}')
-
-  invisible(strip_res$cv)
-}
-
-
-
+#' Print text block
+#'
 #' @description Prints out text block identified by a given label.
 #' @param label ID of the text block to print as encoded in `label` column of `text_blocks` table.
 #' @export
@@ -269,4 +184,64 @@ print_text_block <- function(cv, label){
   cat(strip_res$text)
 
   invisible(strip_res$cv)
+}
+
+
+#' Get list of variable names
+#'
+#' @description Print available variable names.
+#' @param cv Enter name of dataframe where cv data is loaded. `CV` is default in the markdown template.
+#' @param list_name List name (name of tab in Google Sheet). Default is `pdf_mode`, `links`, `entries_data`, `skills`, `text_block` and `contact_info`.
+#' @export
+print_var_names <- function(cv, list_name) {
+  colnames(dplyr::filter(cv$list_name))
+}
+
+
+
+#' Steve's Academic CV Template
+#'
+#' A template for academic CVs. For more information, see here:
+#' <http://svmiller.com/blog/2016/03/svm-r-markdown-cv/>.
+#'
+#' # About YAML header fields
+#'
+#' This section documents some of the YAML fields to know
+#' for this template.
+#'
+#'
+#' | FIELD  | DESCRIPTION |
+#' | ------ | ----------- |
+#' | `author` | name of the author |
+#' | `jobtitle` | appears as first row in the CV |
+#' | `address` |appears as second row in the CV |
+#' | `fontawesome` | logical, defaults to `TRUE`. If `TRUE`, use fontawesome icons |
+#' | `email` | your email, for the third row |
+#' | `github` | optional, displays Github user name on third row |
+#' | `orcid` | optional, displays ORCID ID on third row |
+#' | `phone` | optional, displays your phone number on third row |
+#' | `web` | optional, displays your domain name on third row |
+#' | `updated` | optional, displays (on third row) when file was last updated |
+#' | `keywords` | not terribly useful, but some keywords to embed in PDF so Google may find it |
+#'
+#' @inheritParams rmarkdown::pdf_document
+#' @param ... Arguments to [`rmarkdown::pdf_document`].
+#' @md
+#' @export
+#'
+
+cv <- function(...){
+  templ <- system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "datadrivencv")
+  rmarkdown::pdf_document(template = templ,
+                          ...)
+}
+
+
+
+#' Print path to tex template
+#'
+#' @rdname cv
+#' @exports
+templ_cv <- function() {
+  print(system.file("rmarkdown", "templates", "cv", "resources", "template.tex", package = "datadrivencv"))
 }

@@ -44,38 +44,44 @@ CV <- datadrivencv::create_CV_object(
 # Education
 
 ```{r}
-CV %<>% datadrivencv::print_section_education('education')
+CV %<>% datadrivencv::print_section('education', regex_expression = '{title} at {institution} \\hfill {timeline}')
 ```
 
 # Other Engagements
 
 ```{r}
-CV %<>% datadrivencv::print_section_education('other')
+CV %<>% datadrivencv::print_section('other', regex_expression = '{title} at {institution} \\hfill {timeline}')
 ```
 
 <!--- # Journal Articles
 
 ```{r}
-#CV %<>% datadrivencv::print_section_articles('academic_articles')
+#CV %<>% datadrivencv::print_section('articles', regex_expression = '{title}, *{loc}*, {description_bullets} \\hfill {start}')
 ```
 -->
 
 # Working Papers
 
 ```{r}
-CV %<>% datadrivencv::print_section_articles('working_papers')
+CV %<>% datadrivencv::print_section('working_papers', regex_expression = '"{title}" {description_bullets} \\hfill {start}')
 ```
 
-# Ongoing Work
+# Selected Work in Progress
 
 ```{r}
-CV %<>% datadrivencv::print_section_ongoing('ongoing_work')
+CV %<>% datadrivencv::print_section('ongoing_work', regex_expression = '"{title}" {description_bullets}')
 ```
 
-# Other Work
+# Articles Not Intended for Publication
 
 ```{r}
-CV %<>% datadrivencv::print_section_articles('not_for_publishing')
+CV %<>% datadrivencv::print_section('not_for_publishing', regex_expression = '"{title}", *{loc}*, {description_bullets} \\hfill {start}')
+```
+
+# Presentations
+
+```{r}
+CV %<>% datadrivencv::print_section('seminar', regex_expression = '{title} \\hfill {start}')
 ```
 
 # Skills

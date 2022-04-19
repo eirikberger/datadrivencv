@@ -12,7 +12,7 @@ create_CV_object(
 }
 \arguments{
 \item{data_location}{Path of the spreadsheets holding all your data. This can be
-either a URL to a google sheet with multiple sheets containing the four
+either a URL to a Google Sheet with multiple sheets containing the four
 data types or a path to a folder containing four \code{.csv}s with the neccesary
 data.}
 
